@@ -1,21 +1,22 @@
-## ¿Qué duele hoy?
+## ¿Cómo separan la identidad del votante del contenido del voto sin perder el control de duplicados?**
 
-Colapso de la plataforma por tráfico masivo al concentrarse toda la votación en un solo día.
+- Control de duplicados: Se utiliza el padrón electoral vinculado al sistema académico para validar que el estudiante está matriculado y marcar un indicador de estado.
 
-Falta de confianza y riesgo de manipulación o pérdida del anonimato del votante.
+- Anonimato: Para separar la identidad, este registro de control nunca se almacena junto con el voto. Se implementa un esquema desacoplado o de tokens donde el sistema verifica la elegibilidad del usuario, le permite emitir el voto de forma anónima hacia una urna digital independiente, y destruye cualquier rastro de la relación entre el votante y su papeleta.
 
-Dificultad para validar eficientemente la unicidad del voto (evitar duplicados) conectándose con el sistema académico.
 
-## ¿Quién sufre ese dolor?
 
-Los estudiantes: Frustración por caídas del sistema o dudas sobre la legitimidad de su voto.
+## Un veedor exige verificar que el conteo es correcto. ¿Qué le muestran sin revelar votos individuales?
 
-Los jurados y veedores: Presión por auditar procesos complejos y lidiar con reclamos de fraude o falta de transparencia.
+- Pruebas de integridad: Se le muestran registros de auditoría que garantizan que los votos almacenados no han sido alterados ni eliminados.
 
-Las autoridades universitarias: Costo político y reputacional si la única jornada electoral del semestre falla.
 
-## ¿Qué pasa si el sistema se cae una hora?
+- Reportes agregados: Se presentan actas de escrutinio desglosadas por totales globales o por facultad (siempre que el volumen de votantes en dicha facultad preserve el anonimato), permitiendo comprobar matemáticamente que el número de votos registrados coincide exactamente con el conteo final sin exponer la preferencia de ningún estudiante.
 
-Impacto crítico: Al ser el único día de votación, una hora de caída bloquea masivamente a los estudiantes en sus ventanas de tiempo libre, provocando una baja participación y deslegitimando las elecciones.
 
-Disponibilidad y datos: A diferencia de una biblioteca, aquí sí se justifica invertir en alta disponibilidad (balanceadores y autoescalado) y tolerancia a fallos con cero pérdida de datos (RPO = 0) para proteger los votos ya emitidos.
+## Si el sistema se cae durante la jornada, ¿se pierden votos? ¿Cuál es su pérdida máxima aceptable?
+
+- Pérdida de votos: No se pueden perder votos bajo ninguna circunstancia. Dado que la votación ocurre en una única jornada crítica con alta concurrencia, la base de datos y la arquitectura deben garantizar transacciones seguras con persistencia inmediata antes de confirmar el éxito al votante.
+
+
+- Pérdida máxima aceptable en disponibilidad: Aunque una falla en la infraestructura puede generar interrupciones temporales (afectando el tiempo de recuperación), la pérdida de datos de votos ya emitidos y confirmados es inaceptable, por lo que se requiere alta disponibilidad, bases de datos replicadas y mecanismos de tolerancia a fallos.
